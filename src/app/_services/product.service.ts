@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { finialize } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { AngularFireDatabase , AngularFireList } from '@angular/fire/compat/database';
-import { AngularFirStorage } FROM '@angular/firebase/compat/storage';
+import { AngularFirStorage } from '@angular/firebase/compat/storage';
 import firebase from 'firebase/compat/app';
 
-import { TokenStorageService } from "src/app/_servives/token-storage.service";
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { stringify } from 'querystring';
 import { list } from 'firebase/storage';
 
