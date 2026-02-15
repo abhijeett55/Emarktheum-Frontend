@@ -2,18 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { finalize } from 'rxjs/operators';
-import { AngularFireDatabase , AngularFireList } from '@angular/fire/compat/database';
-import { AngularFirStorage } from '@angular/firebase/compat/storage';
-import firebase from 'firebase/compat/app';
+import { Storage , ref, uploadString, getDownloadURL } from '@angular/fire/storage';
+import { TokenStorageService } from './token-storage.service';
 
-import { TokenStorageService } from 'src/app/_services/token-storage.service';
-import { stringify } from 'querystring';
-import { list } from 'firebase/storage';
-
-const PRODUCT_API = 'http://localhost:8080/api/auth/';
+const PRODUCT_API = 'http://localhost:8080/api/auth';
 const httpOptions = {
-    haeders: new HttpHeaders({ 'Content-Type' : 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type' : 'application/json' })
 }
 
 export class Product {
@@ -23,7 +17,7 @@ export class Product {
         public location: string,
         public surface: any,
         public price: any,
-        public description: Text,
+        public description: string,
         public sold: boolean,
         public verified: boolean,
         public category: any,
@@ -47,11 +41,14 @@ export class Category {
 })
 
 export class ProductService {
-    private basePathn = '/uploads';
+    private basePath = '/uploads';
 
-    constructor(private http: HttpClient, private db: AngularFireDatabase, private storage: AngularFirStorage, private tokenserv: TokenStorageService) { }
+    constructor(private http: HttpClient,
+        private storage: Storage,
+        private tokenserv: TokenStorageService)
+    { }
 
-    create(label: string, title: string, location: string, surface: any, price : any, description: Text, sold: boolean, verified: boolean, category: any, images: string[], sellerAddress: string): Observable<any> {
+    create(label: string, title: string, location: string, surface: any, price : any, description: string, sold: boolean, verified: boolean, category: any, images: string[], sellerAddress: string): Observable<any> {
         return this.http.post(PRODUCT_API + '/create', {
             label,
             title,
@@ -67,29 +64,29 @@ export class ProductService {
     }
     verify(id: string) {
         console.log(id)
-        return this.http.post(PRODUCT_API+'/verify/'+id, httpOptions);
+        return this.http.post(PRODUCT_API+'/verify/'+id,{}, httpOptions);
     }
 
     reject(id: string) {
         console.log(id)
-        return this.http.post(PRODUCT_API+'/delete/'+id, httpOptions);
+        return this.http.post(PRODUCT_API+'/delete/'+id, {}, httpOptions);
     }
 
     sold(id: string) {
         console.log(id)
-        return this.http.post(PRODUCT_API+'/sold/'+id, httpOptions);
+        return this.http.post(PRODUCT_API+'/sold/'+id, {}, httpOptions);
     }
 
     getProducts() {
-        return this.http.get<Product[]>(PRODUCT_API+'/allProduts');
+        return this.http.get<Product[]>(PRODUCT_API+'/allProducts');
     }
 
     getMyProducts(id: string) {
-        return  ;
+        return  this.http.get<Product[]>(PRODUCT_API+'/myProducts/'+id);
     }
 
     getProduct(id: string) {
-        return this.get<Product>(PRODUCT_API+'/getProduct/'+id);
+        return this.http.get<Product>(PRODUCT_API+'/getProduct/'+id);
     }
 
     isVerified() {
@@ -104,17 +101,18 @@ export class ProductService {
         return this.http.get<Category[]>(PRODUCT_API+'/category/getAll');
     }
 
-    storageRef = firebase.app().storage().ref();
 
     async subirImage(number: string, imgBase64: any) {
-        try {
-            let request = await this.storageRef.child("productImages/" + number).putString(imgBase64, 'data_url');
-            console.log(request);
+    try {
+        const filePath = `productImages/${number}`;
+        const storageRef = ref(this.storage, filePath);
 
-            return await request.ref.getDownloadURL();
-        } catch(err) {
-            console.log(err);
-            return null;
+        await uploadString(storageRef, imgBase64, 'data_url');
+
+        return await getDownloadURL(storageRef);
+        } catch (err) {
+        console.log(err);
+        return null;
         }
     }
 }

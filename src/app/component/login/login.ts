@@ -1,10 +1,15 @@
+import { CommonModule } from '@angular/common';
+import {FormsModule } from '@angular/forms';
 import { Component , OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../_services/auth.service';
+import { TokenStorageService } from '../../_services/token-storage.service';
+
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  standalone: true,
+  imports: [ CommonModule, FormsModule ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -20,13 +25,13 @@ export class Login implements OnInit {
   };
 
   isLoggedIn = false;
-  isLoggedFailed = false;
+  isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router ) {
-
-  }
+  constructor(private authService: AuthService,
+    private tokenStorage: TokenStorageService,
+    private router: Router) { }
   ngOnInit(): void {
         if (this.tokenStorage.getToken()) {
             this.isLoggedIn = true;
@@ -37,7 +42,7 @@ export class Login implements OnInit {
     onSubmit(): void {
         const { username, password } = this.form;
         
-        this.authService.login(username, password).subscribe({
+        this.authService.login(username!, password!).subscribe({
             next: data => {
                 this.tokenStorage.saveToken(data.accessToken);
                 this.tokenStorage.saveUser(data);
@@ -45,19 +50,14 @@ export class Login implements OnInit {
                 this.isLoginFailed = false;
                 this.isLoggedIn = true;
                 this.roles = this.tokenStorage.getUser().roles;
-                this.relodPage();
+                alert("SignIn Successfull!");
+                this.router.navigate(['/']);
             },
             error: err => {
-                this.errorMessage = err.error.message;
+                this.errorMessage = err.error.message || 'Login Failed';
                 this.isLoginFailed = true;
             }
         });
-        alert("SignIn Successfull!")
-        this.router.navigate(['/']);
-    }
-
-
-    relodPage(): void {
-        window.location.reload();
+        
     }
 }

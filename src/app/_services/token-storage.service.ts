@@ -10,8 +10,9 @@ const USER_KEY = 'auth-user';
 export class TokenStorageService {
     constructor() { }
 
-    signOut(): void {
-        window.sessionStorage.clear();
+    public signOut(): void {
+        window.sessionStorage.removeItem(TOKEN_KEY);
+        window.sessionStorage.removeItem(USER_KEY);
     }
 
     public saveToken(token: string): void {
@@ -23,11 +24,8 @@ export class TokenStorageService {
         return window.sessionStorage.getItem(TOKEN_KEY);
     }
 
-    public isloggedin() {
-        if(this.getToken() == undefined) {
-            return false;
-        }
-        return true;
+    public isLoggedin() {
+        return this.getToken() !== null;
     }
 
     public saveUser(user: any): void {
@@ -45,14 +43,10 @@ export class TokenStorageService {
         return {};
     }
 
-    public getUserId(): any {
-        const id = this.getUser().id;
+    public getUserId(): String | null {
+        const user = this.getUser();
 
-        if(id) {
-            return id;
-        }
-
-        return {};
+        return user?.id ?? null;
     }
 
 }                     
