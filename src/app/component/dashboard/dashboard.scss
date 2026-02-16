@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  background-color: #f9fafc;
+}
+
+/* Add spacing between all sections */
+app-banner-area,
+app-new-items,
+app-product-area {
+  display: block;
+  padding: 100px 0;
+}
+
+/* Optional alternating background effect */
+app-new-items {
+  background-color: #ffffff;
+}
+
+app-product-area {
+  background-color: #f3f5f9;
+}
+
+/* Responsive spacing */
+@media (max-width: 992px) {
+  app-banner-area,
+  app-new-items,
+  app-product-area {
+    padding: 70px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  app-banner-area,
+  app-new-items,
+  app-product-area {
+    padding: 50px 0;
+  }
+}
