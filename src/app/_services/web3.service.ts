@@ -1,120 +1,139 @@
-// import { Injectable } from '@angular/core';
-// import Web3  from 'web3';
-// import { ABI as abi} from '../contracts/ABI';
+import { Injectable } from '@angular/core';
+import { BrowserProvider, Contract, parseEther, formatEther } from 'ethers';
+import { ABI as abi} from '../contracts/ABI';
 
-// declare const window: any;
+declare const window: any;
 
-// const address = '0x1911c19a61FbFd4dc65D58E1541150Cff305B1D7'
+const CONTRACT_ADDRESS = '0x1911c19a61FbFd4dc65D58E1541150Cff305B1D7';
 
-// @Injectable({
-//   providedIn: 'root',
-// })
+@Injectable({
+  providedIn: 'root',
+})
 
-// export class Web3Service {
-//   public account: string | null = null;
-//   private web3!: Web3;
-//   private contract: any;
+export class Web3Service {
+  private provider!: BrowserProvider;
+  private signer: any;
+  private contract: any;
 
-//   constructor() {}
+  public account: string | null = null;
 
-//   async Token() {
-//     if(!this.contract) return;
+  constructor() {
 
-//     const token = await this.Contract.methods.Token().call({
-//       from: this.account,
-//     });
+  }
 
-//     console.log('Token: ', token);
-//     return token;
-//   }
+  // 🔹 Connect MetaMask
+  async connectWallet() {
+    if (typeof window === 'undefined' || !window.ethereum) {
+      console.log('MetaMask not installed');
+      return;
+    }
 
-//   async loginmsk() {
-//     if(!window.ethereum) {
-//       alert('MetaMask not detected');
-//       return;
-//     }
-//       try {
-//         this.web3 = new Web3(window.ethereum);
+    this.provider = new BrowserProvider(window.ethereum);
 
-//         await window.ethereum.request({
-//           method: 'eth_requestAccounts',
-//         });
+    await this.provider.send('eth_requestAccounts', []);
 
-//         await this.loadAccount();
-//         await this.loadContract();
-        
-//         if(this.account) {
-//           sessionStorage.setItem('maskAccount', this.account);
-//         }
+    this.signer = await this.provider.getSigner();
+    this.account = await this.signer.getAddress();
 
-//         console.log('Connected account: ', this.account);
-//       } catch (error) {
-//         console.log('MetaMask connection failed', error);
-//       }
-//     }
+    this.contract = new Contract(CONTRACT_ADDRESS, abi, this.signer);
+
+    if (this.account) {
+      sessionStorage.setItem('maskAccount', this.account);
+    }
+    console.log('Connected:', this.account);
+  }
 
 
-//   async loadAccount() {
-//     const accounts = await this.web3.eth.getAccounts();
-//     this.account = accounts[0];
-//   }
+   // 🔹 Get current address
+  getAddress() {
+    return this.account;
+  }
 
+  // 🔹 Read Token() from contract
+  async Token() {
+    if (!this.contract) return;
 
-//   async loadContract() {
-//     this.contract = new this.web3.eth.contract(abi, address, {gasPrice: '2000000', from: this.account })
-//   }
+    try {
+      const token = await this.contract.Token();
+      console.log('Token:', token);
+      return token;
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  }
 
-//   async addProduct(title: string, seller:string, etherValue: string) {
-//     if(!this.contract) return;
+  // 🔹 Add Product (contract call)
+  async addProduct(title: string, seller: string, etherValue: string) {
+    if (!this.contract) return;
 
-//     await this.contract.methods
-//     .addProduct(title, seller, etherValue)
-//     .send({
-//       from: this.account,
-//       gas: '6721975',
-//     });
-//   }
+    try {
+      const tx = await this.contract.addProduct(title, seller, etherValue);
+      await tx.wait();
+      console.log('Product added');
+      
+      await this.buy(seller, etherValue);
 
-//   async buy(seller: string, etherValue: string) {
-//     if(!this.web3 || !this.account) return;
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  }
 
-//     const value = this.web3.utils.toWei(etherValue, 'ether');
+  // 🔹 Send Ether
+  async buy(seller: string, etherValue: string) {
+    if (!this.signer) return;
 
-//     return await this.web3.eth.sendTransaction({
-//       from: this.account,
-//       to: seller,
-//       value: value,
-//     });
-//   }
+    try {
+      const tx = await this.signer.sendTransaction({
+        to: seller,
+        value: parseEther(etherValue)
+      });
 
+      await tx.wait();
+      console.log('Ether transferred');
 
+      return tx;
 
-//   async getAllTranscations() {
-//     if(!this.contract) return;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-//     const value = await this.contract.methods
-//     .getAllProducrts()
-//     .call({from this.account });
+  // 🔹 Get all products
+  async getAllTransactions() {
+    if (!this.contract) return;
 
-//     sessionStorage.setItem('transcation', JSON.stringify(value));
-//     return value;
-//   }
+    try {
+      const value = await this.contract.getAllProducts();
 
-//   async getMyTranscations() {
-//     if(!this.contract) return;
+      sessionStorage.setItem('transactions', JSON.stringify(value));
+      console.log(value);
 
-//     return await this.contract.methods
-//     .getMyTranscations()
-//     .call({from : this.account});
-//   }
+      return value;
 
-//   async getCurrentAccountBalance() {
-//     if(!this.web3 || !this.account) return;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-//     return this.web3.eth.getBalance(this.account);
-//   }
-  
-//   getAddress() {
-//     return this.account;
-//   }
-// }
+  // 🔹 Get my transactions
+  async getMyTransactions() {
+    if (!this.contract) return;
+
+    try {
+      const value = await this.contract.getMyTransactions();
+      return value;
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // 🔹 Get account balance
+  async getCurrentAccountBalance() {
+    if (!this.provider || !this.account) return;
+
+    const balance = await this.provider.getBalance(this.account);
+    return formatEther(balance);
+  }
+
+}
