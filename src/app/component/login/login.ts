@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component , OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../_services/auth.service';
+import { Auth } from '../../_services/auth';
 import { TokenStorageService } from '../../_services/token-storage.service';
 
 
@@ -29,7 +29,7 @@ export class Login implements OnInit {
   errorMessage = '';
   roles: string[] = [];
 
-  constructor(private authService: AuthService,
+  constructor(private authService: Auth,
     private tokenStorage: TokenStorageService,
     private router: Router) { }
   ngOnInit(): void {

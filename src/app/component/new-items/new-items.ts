@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductComponent } from '../product/product';
-import { Product, ProductService } from '../../_services/product.service';
+import { Product, ProductService } from '../../_services/product';
 @Component({
   selector: 'app-new-items',
   standalone: true,

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Storage } from '@angular/fire/storage';
-import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { Storage, ref, uploadString, getDownloadURL } from '@angular/fire/storage';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 
@@ -46,9 +45,9 @@ export class Category {
 
 export class ProductService {
 
-    private storage = getStorage();
     constructor (
     private http: HttpClient,
+    private storage: Storage,
     private tokenStorageService : TokenStorageService) { }
 
     create(label: string,
