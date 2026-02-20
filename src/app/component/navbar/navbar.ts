@@ -1,53 +1,57 @@
-// import { Component , OnInit } from '@angular/core';
-// import { TokenStorageService } from '../../_services/token-storage.service';
-// // import { Web3 } from '../../_services/web3';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms'
+import { Component , OnInit } from '@angular/core';
+import { TokenStorageService } from '../../_services/token-storage.service';
+import { Web3Service } from '../../_services/web3.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
-// @Component({
-//   selector: 'app-navbar',
-//   standalone: true,
-//   imports: [ CommonModule, FormsModule ],
-//   templateUrl: './navbar.html',
-//   styleUrl: './navbar.scss',
-// })
-
-
-// export class Navbar implements OnInit {
-//   private roles: string[] = [];
-//   isLoggedIn = false;
-//   showAdminBoard = false;
-//   showUserBoard = false;
-//   username?: string;
-//   router: any;
-
-  // constructor(private tokenStorageService : TokenStorageService,
-  //   private web3: Web3 ) {}
+@Component({
+  selector: 'app-navbar',
+  standalone: true,
+  imports: [ CommonModule, FormsModule ],
+  templateUrl: './navbar.html',
+  styleUrl: './navbar.scss',
+})
 
 
-  // openMetaMask() {
-  //   this.web3.loginmsk().then(resp => {
-  //     console.log(resp);
-  //   })
-  // }
+export class Navbar implements OnInit {
+  private roles: string[] = [];
+  isLoggedIn = false;
+  showAdminBoard = false;
+  showUserBoard = false;
+  username?: string;
 
-//   ngOnInit(): void {
-//     this.isLoggedIn = !this.tokenStorageService.getToken();
+  constructor(
+    private tokenStorageService : TokenStorageService,
+    private web3: Web3Service,
+    private router: Router ) {}
 
-//     if(this.isLoggedIn) {
-//       const user = this.tokenStorageService.getUser();
-//       this.roles = user.roles;
+  async openMetaMask() {
+  try {
+    await this.web3.connectWallet();
+    console.log('Wallet connected:', this.web3.getAddress());
+    } catch (error) {
+    console.error(error);
+    }
+  }
 
-//       this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
-//       this.showUserBoard = this.roles.includes('ROLE_USER');
+  ngOnInit(): void {
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
 
-//       this.username = user.username;
-//     }
-//   }
+    if(this.isLoggedIn) {
+      const user = this.tokenStorageService.getUser();
+      this.roles = user.roles;
 
-//   logout() : void {
-//     this.tokenStorageService.signOut();
-//     window.location.reload;
-//     this.router.navigate(['/']);
-//   }
-// }
+      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
+      this.showUserBoard = this.roles.includes('ROLE_USER');
+
+      this.username = user.username;
+    }
+  }
+
+  logout() : void {
+    this.tokenStorageService.signOut();
+    window.location.reload();
+    this.router.navigate(['/']);
+  }
+}
