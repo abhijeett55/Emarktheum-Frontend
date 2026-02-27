@@ -1,11 +1,17 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-request',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './request.html',
   styleUrl: './request.scss',
 })
-export class Request {
 
+
+export class Request implements OnInit {
+  constructor() { }
+  ngOnInit(): void {
+
+  }
 }

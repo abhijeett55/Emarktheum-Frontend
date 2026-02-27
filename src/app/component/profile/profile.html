@@ -1,1 +1,188 @@
-<p>profile works!</p>
+<!-- Background Section -->
+<div class="rn-author-bg-area bg_image--9 bg_image ptb--150">
+  <div class="container">
+    <div class="row"></div>
+  </div>
+</div>
+
+<!-- Profile Info -->
+<div class="rn-author-area mb--30 mt_dec--120">
+  <div class="container">
+    <div class="row padding-tb-50 align-items-center">
+      <div class="col-lg-12">
+        <div class="author-wrapper">
+          <div class="author-inner">
+
+            <!-- Avatar -->
+            <div class="user-thumbnail">
+              <img src="assets/images/icons/boy-avater.png"
+                   height="140"
+                   width="140"
+                   alt="User Avatar">
+            </div>
+
+            <!-- Logged In -->
+            <div class="rn-author-info-content"
+                 *ngIf="currentUser; else loggedOut">
+
+              <h4 class="title">{{ currentUser?.username }}</h4>
+
+              <div class="row">
+                <strong class="col-3">Email:</strong>
+                <span class="col-9">{{ currentUser?.email }}</span>
+              </div>
+
+              <div class="row mt-3">
+                <strong class="col-3">Roles:</strong>
+                <div class="col-9">
+                  <span *ngFor="let role of currentUser?.roles"
+                        class="badge bg-primary me-2">
+                    {{ role }}
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Logged Out -->
+            <ng-template #loggedOut>
+              <div class="alert alert-warning">
+                Please login.
+              </div>
+            </ng-template>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabs Section -->
+<div class="rn-authore-profile-area">
+  <div class="container">
+
+    <!-- Tab Buttons -->
+    <div class="row">
+      <div class="col-12">
+        <nav class="tab-button-one">
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+
+            <button class="nav-link active"
+                    id="nav-home-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-home"
+                    type="button"
+                    role="tab"
+                    aria-controls="nav-home"
+                    aria-selected="true">
+              My Posts
+            </button>
+
+            <button (click)="getMyTransactions()"
+                    class="nav-link"
+                    id="nav-profile-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-profile"
+                    type="button"
+                    role="tab"
+                    aria-controls="nav-profile"
+                    aria-selected="false">
+              My Transactions
+            </button>
+
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content rn-bid-content mt-4" id="nav-tabContent">
+
+      <!-- My Products -->
+      <div class="tab-pane fade show active"
+           id="nav-home"
+           role="tabpanel"
+           aria-labelledby="nav-home-tab">
+
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6 col-sm-6"
+               *ngFor="let pr of myProducts">
+
+            <app-product
+              [label]="pr.label"
+              [location]="pr.location"
+              [price]="pr.price">
+            </app-product>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- My Transactions -->
+      <div class="tab-pane fade"
+           id="nav-profile"
+           role="tabpanel"
+           aria-labelledby="nav-profile-tab">
+
+        <div class="rn-creators-area mt--30">
+          <div class="notice-heading mb-4">
+            <h4>All My Transactions</h4>
+          </div>
+
+          <div class="rn-notification-wrapper creators"
+               *ngFor="let tr of myTransactions">
+
+            <div class="top-seller-inner-one"
+                 *ngIf="tr?.title">
+
+              <div class="top-seller-wrapper">
+
+                <div class="thumbnail varified">
+                  <img src="assets/myImages/icons8-ethereum-48.png"
+                       alt="Ethereum Icon">
+                </div>
+
+                <div class="top-seller-content">
+
+                  <h6 class="name">
+                    Seller:
+                    {{
+                      tr.seller?.toLowerCase() === currentAddress?.toLowerCase()
+                      ? 'Me'
+                      : tr.seller
+                    }}
+                  </h6>
+
+                  <h6 class="name">
+                    Buyer:
+                    {{
+                      tr.buyer?.toLowerCase() === currentAddress?.toLowerCase()
+                      ? 'Me'
+                      : tr.buyer
+                    }}
+                  </h6>
+
+                  <span class="count-number">
+                    Title: {{ tr.title }}
+                  </span>
+
+                </div>
+              </div>
+
+              <div class="mt-2">
+                <span class="btn btn-primary-alta">
+                  Price: {{ tr.price }}
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
