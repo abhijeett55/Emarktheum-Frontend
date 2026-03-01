@@ -14,8 +14,8 @@ import { Transaction as transaction } from '../../models/Transaction';
 })
 
 export class Profile implements OnInit {
-  currentUser: any;
-  currentAddress!: string;
+  currentUser: any = null;
+  currentAddress: string | null = null;
 
   myProducts!: Product[];
   mySoldProducts!: Product[];
@@ -26,12 +26,66 @@ export class Profile implements OnInit {
 
   constructor(
     private token: TokenStorageService,
-    private productService: ProductService,
+    private productservice: ProductService,
     private web3: Web3Service
     ) { }
 
 
-  ngOnInit(): void {
+  getMyProduct() {
+    this.productservice.getMyProducts()
+    .subscribe( data => { 
+      this.myProducts = data;
+    })
+    console.log(this.myProducts);
+  }
 
+  getMySoldPoduct() {
+    for(var p of this.myProducts) {
+      if(p.sold) {
+        this.mySoldProducts.push(p);
+      }
+    }
+    return this.mySoldProducts;
+  }
+
+  forSaleProduct() {
+    console.log("sale");
+    for(var p of this.myProducts) {
+      if(!p.sold) {
+        console.log(this.mySaleProducts);
+      }
+    }
+    return this.mySaleProducts;
+  }
+
+  async getMyTranscation() {
+    this.myTranscation = await this.web3.getMyTransactions();
+    this.currentAddress = this.web3.getAddress();
+    console.log(this.myTranscation);
+    console.log('------------------------------------');
+    console.log(this.currentAddress);
+  }
+
+  async getAll() {
+    this.allTransactions = await this.web3.getAllTransactions();
+  }
+
+  async ngOnInit(): Promise<void> {
+    this.web3.connectWallet();
+
+    this.currentUser = this.token.getUser();
+    console.log(this.currentUser.id);
+
+    this.currentAddress = this.web3.getAddress();
+    console.log('--------------------------------------');
+    console.log(this.currentAddress);
+
+    this.getMyProduct();
+    this.forSaleProduct();
+    console.log(this.mySaleProducts);
+    this.getMySoldPoduct();
+    this.getAll();
+
+    
   }
 }

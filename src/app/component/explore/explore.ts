@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService, Product } from '../../_services/product';
+
+
 @Component({
   selector: 'app-explore',
   standalone: true,
@@ -8,40 +10,36 @@ import { ProductService, Product } from '../../_services/product';
   templateUrl: './explore.html',
   styleUrl: './explore.scss',
 })
+
 export class Explore implements OnInit {
   product!: Product[];
   prods!: Product[];
   Sprods!: Product[];
 
 
-  constuctor(
-    private productService: ProductService) { }
+  constructor(private productservice: ProductService) { }
 
   getProduct() {
-    this.productService.getProduct().subsscribe(data => { this.products = data;
-      console.log(data);
-    });
-
-
-    console.log(this.product)
-  }
+  this.productservice.getProducts().subscribe((data: Product[]) => {
+    this.product = data;
+    console.log(data);
+  });
+}
 
 
   verifiedProduct() {
-    this.productService.isVerified().subsscribe(data => {this.prods=data;
+    this.productservice.isVerified().subscribe((data : Product[]) => {
+      this.prods=data;
       console.log(data);
     });
-
-    console.log(this.prods)
   }
 
 
   soldProduct() {
-    this.productService.isSold().subsscribe(data => {this.Sprods = data;
+    this.productservice.isSold().subscribe((data : Product[]) => {
+      this.Sprods = data;
       console.log(data);
     });
-
-    console.log(this.Sprods)
   }
 
   ngOnInit(): void {

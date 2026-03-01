@@ -79,7 +79,7 @@
               My Posts
             </button>
 
-            <button (click)="getMyTransactions()"
+            <button (click)="getMyTransaction()"
                     class="nav-link"
                     id="nav-profile-tab"
                     data-bs-toggle="tab"
@@ -131,7 +131,7 @@
           </div>
 
           <div class="rn-notification-wrapper creators"
-               *ngFor="let tr of myTransactions">
+               *ngFor="let tr of myTransaction">
 
             <div class="top-seller-inner-one"
                  *ngIf="tr?.title">
@@ -148,7 +148,7 @@
                   <h6 class="name">
                     Seller:
                     {{
-                      tr.seller?.toLowerCase() === currentAddress?.toLowerCase()
+                      tr.seller.toLowerCase() === currentAddress.toLowerCase()
                       ? 'Me'
                       : tr.seller
                     }}
@@ -157,7 +157,7 @@
                   <h6 class="name">
                     Buyer:
                     {{
-                      tr.buyer?.toLowerCase() === currentAddress?.toLowerCase()
+                      tr.buyer.toLowerCase() === currentAddress.toLowerCase()
                       ? 'Me'
                       : tr.buyer
                     }}

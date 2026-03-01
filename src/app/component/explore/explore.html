@@ -28,12 +28,12 @@
             <div class="col-lg-8">
                 <div class="button-group isotop-filter filters-button-group d-flex justify-content-start justify-content-lg-end mt_md--30 mt_sm--30">
                    
-                    <button (click) = toggleDisplay() class="is-checked">All Items</button>
-                    <button (click) = toggleDisplay1()>sold Items</button>
+                    <button (click) = toggleDisplay1() class="is-checked">All Items</button>
+                    <button (click) = toggleDisplay2()>sold Items</button>
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 " [hidden] = "isShow">
+        <div class="col-lg-12 " [hidden] = "isShow1">
             <div class="grid-metro5 mesonry-list "  >
                 <div class="resizer" ></div>
                
@@ -47,7 +47,7 @@
             </div>
            
         </div>
-        <div class="col-lg-12 " [hidden] = "isShow1" >
+        <div class="col-lg-12 " [hidden] = "isShow2" >
  <div class="grid-metro5 mesonry-list " >
                 <div class="resizer" ></div>
                     <div  *ngFor="let ps of Sprods"  data-sal-delay="600" data-sal-duration="800" class="grid-metro-item cat--5 cat--4" >

@@ -9,7 +9,7 @@ import { ProductService, Product } from '../../_services/product';
   styleUrl: './g-announce.scss',
 })
 export class GAnnounce implements OnInit {
-  isSuccessfull = falswe;
+  isSuccessfull = false;
   errorMessage = '';
   prods!: Product[];
   newReq!: Product[];
@@ -36,7 +36,7 @@ export class GAnnounce implements OnInit {
 
 
   newestRequest() {
-    this.prodService.getProduct().subscribe(data => {this.req = data.slice(-6).reverse()});
+    this.prodService.getProduct().subscribe(data => {this.req1 = data.slice(-6).reverse()});
     for(let p of this.req2) {
       if(p.sold == false ) this.newReq.push(p);
     }
