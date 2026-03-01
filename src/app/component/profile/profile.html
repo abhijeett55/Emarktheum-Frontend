@@ -1,3 +1,4 @@
+
 <!-- Background Section -->
 <div class="rn-author-bg-area bg_image--9 bg_image ptb--150">
   <div class="container">
@@ -79,7 +80,7 @@
               My Posts
             </button>
 
-            <button (click)="getMyTransaction()"
+            <button (click)="getMyTransactions()"
                     class="nav-link"
                     id="nav-profile-tab"
                     data-bs-toggle="tab"
@@ -146,21 +147,11 @@
                 <div class="top-seller-content">
 
                   <h6 class="name">
-                    Seller:
-                    {{
-                      tr.seller.toLowerCase() === currentAddress.toLowerCase()
-                      ? 'Me'
-                      : tr.seller
-                    }}
+                    *ngIf="isSeller(tr)"
                   </h6>
 
                   <h6 class="name">
-                    Buyer:
-                    {{
-                      tr.buyer.toLowerCase() === currentAddress.toLowerCase()
-                      ? 'Me'
-                      : tr.buyer
-                    }}
+                    *ngIf="isBuyer(tr)"
                   </h6>
 
                   <span class="count-number">

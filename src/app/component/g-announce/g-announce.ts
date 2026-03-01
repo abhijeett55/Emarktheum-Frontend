@@ -1,5 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import { ProductService, Product } from '../../_services/product'; 
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-g-announce',
@@ -8,6 +11,7 @@ import { ProductService, Product } from '../../_services/product';
   templateUrl: './g-announce.html',
   styleUrl: './g-announce.scss',
 })
+
 export class GAnnounce implements OnInit {
   isSuccessfull = false;
   errorMessage = '';
@@ -26,7 +30,9 @@ export class GAnnounce implements OnInit {
 
 
   getAllRequest() {
-    this.prodService.getProduct().subscribe(data => {this.prods = data.reverse()});
+    this.prodService.getProducts().subscribe((data: Product[]) => {
+      this.prods = data.reverse()
+    });
     for(let p of this.prods ) {
       if(p.sold == false) this.req1.push(p);
     }
@@ -36,7 +42,8 @@ export class GAnnounce implements OnInit {
 
 
   newestRequest() {
-    this.prodService.getProduct().subscribe(data => {this.req1 = data.slice(-6).reverse()});
+    this.prodService.getProducts().subscribe((data: Product[]) => {
+      this.req1 = data.slice(-6).reverse()});
     for(let p of this.req2) {
       if(p.sold == false ) this.newReq.push(p);
     }

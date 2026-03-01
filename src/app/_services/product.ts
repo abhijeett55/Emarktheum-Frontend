@@ -16,6 +16,7 @@ export class Product {
   constructor(
     public id: string,
     public label: string,
+    public title: string,
     public location: string,
     public surface: any,
     public price: any,

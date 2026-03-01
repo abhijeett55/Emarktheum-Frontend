@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { ProductComponent } from '../product/product';
 import { ProductService, Product } from '../../_services/product';
 
 
 @Component({
   selector: 'app-explore',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule, ProductComponent ],
   templateUrl: './explore.html',
   styleUrl: './explore.scss',
 })
