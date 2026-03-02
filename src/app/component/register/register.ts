@@ -1,0 +1,58 @@
+import { Component, OnInit } from '@angular/core';
+import { Auth } from '../../_services/auth';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+@Component({
+  selector: 'app-register',
+  standalone: true,
+  imports: [ CommonModule , FormsModule ],
+  templateUrl: './register.html',
+  styleUrl: './register.scss',
+})
+export class Register implements  OnInit {
+  form: {
+    username: string | null;
+    email: string | null;
+    password: string | null;
+  } = {
+    username: null,
+    email : null,
+    password : null
+  };
+
+
+  isSuccessful = false;
+  isSignUpFailed = false;
+  errorMessage = '';
+
+  constructor(private auth: Auth, private router : Router) {
+  }
+
+  ngOnInit() : void {
+
+  }
+
+  async onSubmit() : Promise<void> {
+    const { username , email, password } = this.form;
+
+    if(!username || !email || !password) {
+      this.errorMessage = 'All fields are required';
+      return;
+    }
+
+    this.auth.register(username,email, password).subscribe({
+      next: data => {
+        console.log(data);
+        this.isSuccessful = true;
+        this.isSignUpFailed = false;
+
+        this.router.navigate(['/login']);
+      },
+      error: err => {
+        this.errorMessage = err.error?.message || 'Registration Failed';
+        this.isSignUpFailed = true;
+      }
+    });
+  }
+}

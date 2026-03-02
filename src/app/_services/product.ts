@@ -107,6 +107,10 @@ export class ProductService {
       return this.http.get<Product[]>(PRODUCT_API+'/isSold');
     }
 
+    sold(id: string) {
+      return this.http.post(PRODUCT_API+'/sold/'+id, httpOptions);
+    }
+
     getCategory() {
       return this.http.get<Category[]>(PRODUCT_API+'/category/getAll');
     }
