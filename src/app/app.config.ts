@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideStorage , getStorage } from '@angular/fire/storage';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
@@ -9,6 +9,8 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { NgModule } from '@angular/core';
 import { environment } from '../environment/environment';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './_helpers/auth.interceptor';
 
 
 
@@ -20,7 +22,18 @@ export const appConfig: ApplicationConfig = {
 
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withFetch()),
+
+
+    provideHttpClient(withFetch(),
+      withInterceptorsFromDi()
+      ),
+
+        {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+
     provideClientHydration(withEventReplay())
   ]
 };
