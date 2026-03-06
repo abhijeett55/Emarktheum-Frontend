@@ -1,5 +1,5 @@
- <!-- Authenticated {{ _services/authenticationService | async }}  -->
-<header class="rn-header haeder-default black-logo-version header--fixed header--sticky">
+
+<header class="rn-header header-default black-logo-version header--fixed header--sticky">
 
     <div class="container">
         <div class="header-inner">
@@ -13,12 +13,12 @@
                         <!-- Start Mainmanu Nav -->
                         <ul class="mainmenu">
                             <li >
-                                <a *ngIf=" !showAdminBoard" class="its_new" href="/">Home</a>
+                                <a *ngIf=" !showAdminBoard" class="its_new" routerlink="/">Dashboard</a>
                                
                             </li>
                            
                             <li >
-                                    <a routerLink="explore" >Explore <i class=" its_new"></i></a>
+                                    <a routerLink="/explore" >Explore <i class=" its_new"></i></a>
                                   
                             </li>
                           
@@ -29,19 +29,17 @@
                             
                                
                                                
-                                <li ><a *ngIf="!isLoggedIn" routerLink="register">Registration <i data-feather="user-plus"></i></a></li>
+                                <li ><a *ngIf="!isLoggedIn" routerLink="/register">Register <i data-feather="user-plus"></i></a></li>
                              
-                               <li ><a *ngIf="isLoggedIn && showAdminBoard" routerLink="transactions">Transactions <i data-feather="user-plus"></i></a></li>        
-                               <li ><a *ngIf="isLoggedIn && showAdminBoard" routerLink="gAnnonce">Request management <i data-feather="user-plus"></i></a></li>        
-
-                              <!-- <li ><a *ngIf="isLoggedIn && showAdminBoard" routerLink="gCategory">Gestion Des category <i data-feather="user-plus"></i></a></li>   -->     
+                               <li ><a *ngIf="isLoggedIn && showAdminBoard" routerLink="/transactions">Transactions <i data-feather="user-plus"></i></a></li>        
+                               <li ><a *ngIf="isLoggedIn && showAdminBoard" routerLink="/g-announce">Request management <i data-feather="user-plus"></i></a></li>       
 
                            
                         </ul>
                         <!-- End Mainmanu Nav -->
                     </nav>
                 </div><div> 
-                <a  *ngIf="isLoggedIn && showUserBoard" class=" icon-box btn btn-primary-alta btn-small" routerLink="create" >create</a>
+                <a  *ngIf="isLoggedIn && showUserBoard" class=" icon-box btn btn-primary-alta btn-small" routerLink="/create" >create</a>
                               
                           </div> 
             </div>
@@ -70,7 +68,7 @@
 
                 <div class="setting-option header-btn" *ngIf="!isLoggedIn">
                     <div class="icon-box">
-                        <a class="btn btn-primary-alta btn-small" routerLink="login" >Log In</a>
+                        <a class="btn btn-primary-alta btn-small" routerLink="/login" >Log In</a>
                     </div>
                     
                    
@@ -91,8 +89,8 @@
                            
                            
                             <ul class="list-inner" >
-                                <li><a routerLink="profile">My Profile</a></li>
-                                <li><a routerLink="login" (click)="logout()">Sign Out</a></li>
+                                <li><a routerLink="/profile">My Profile</a></li>
+                                <li><a routerLink="/login" (click)="logout()">Sign Out</a></li>
                             </ul>
                         </div>
                     </div>

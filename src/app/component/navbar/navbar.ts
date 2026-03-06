@@ -3,12 +3,12 @@ import { TokenStorageService } from '../../_services/token-storage.service';
 import { Web3Service } from '../../_services/web3.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ CommonModule, FormsModule ],
+  imports: [ CommonModule, FormsModule, RouterModule ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })

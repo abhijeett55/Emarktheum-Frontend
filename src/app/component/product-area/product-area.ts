@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Product, ProductService } from '../../_services/product';
+import { ProductComponent } from '../product/product';
 
 @Component({
   selector: 'app-product-area',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, ProductComponent],
   templateUrl: './product-area.html',
   styleUrl: './product-area.scss',
 })
