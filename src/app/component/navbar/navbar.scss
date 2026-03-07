@@ -1,0 +1,57 @@
+.header-inner{
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.mainmenu{
+display:flex;
+gap:30px;
+list-style:none;
+margin:0;
+}
+
+.mainmenu a{
+text-decoration:none;
+font-weight:500;
+color:white;
+}
+
+.header-right{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.search-box input{
+border-radius:20px;
+padding:6px 14px;
+border:1px solid #ddd;
+}
+
+.btn-primary{
+background:#1652f0;
+color:white;
+padding:6px 18px;
+border-radius:20px;
+}
+
+.btn-secondary{
+background:#1652f0;
+color:white;
+padding:6px 18px;
+border-radius:20px;
+}
+
+.btn-light{
+background:#f2f2f2;
+padding:6px 18px;
+border-radius:20px;
+}
+
+.logo-thumbnail{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:18px;
+}

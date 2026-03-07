@@ -92,3 +92,33 @@ body.active-dark-mode {
     text-align: center;
   }
 }
+
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus outline for accessibility */
+*:focus-visible {
+  outline: 2px solid #0052ff;
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background: #0052ff;
+  color: white;
+}

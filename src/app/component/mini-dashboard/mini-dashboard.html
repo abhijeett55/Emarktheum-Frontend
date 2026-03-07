@@ -1,0 +1,159 @@
+<div class="dashboard-container">
+    <!-- Header Section with Dark Theme -->
+    <div class="dashboard-header">
+        <div class="header-left">
+            <h2 class="dashboard-title">{{ getActiveTabTitle() }}</h2>
+            <span class="api-status" [class.online]="apiAvailable" [class.offline]="!apiAvailable">
+                {{ getApiStatusMessage() }}
+            </span>
+        </div>
+        <div class="header-controls">
+            <button class="refresh-btn" (click)="refreshData()" [disabled]="isLoading[activeTab]">
+                <span class="refresh-icon">↻</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Tab Navigation - Dark Theme -->
+    <div class="tabs-container">
+        <button 
+            class="tab-btn" 
+            [class.active]="activeTab === 'tradable'"
+            (click)="setActiveTab('tradable')">
+            <span class="tab-icon">📊</span>
+            Tradable
+        </button>
+        <button 
+            class="tab-btn" 
+            [class.active]="activeTab === 'gainers'"
+            (click)="setActiveTab('gainers')">
+            <span class="tab-icon">📈</span>
+            24h Gainers
+        </button>
+        <button 
+            class="tab-btn" 
+            [class.active]="activeTab === 'weekly'"
+            (click)="setActiveTab('weekly')">
+            <span class="tab-icon">📆</span>
+            Weekly
+        </button>
+        <button 
+            class="tab-btn" 
+            [class.active]="activeTab === 'new'"
+            (click)="setActiveTab('new')">
+            <span class="tab-icon">🆕</span>
+            New
+        </button>
+    </div>
+
+    <!-- Time Period Selector (for Gainers tab) -->
+    @if (activeTab === 'gainers') {
+        <div class="period-selector">
+            @for (period of timePeriods; track period.value) {
+                <button 
+                    class="period-btn" 
+                    [class.active]="selectedPeriod === period.value"
+                    (click)="onPeriodSelect(period.value)">
+                    {{ period.label }}
+                </button>
+            }
+        </div>
+    }
+
+    <!-- Error/Info Message -->
+    @if (error) {
+        <div class="info-message" [class.error]="!apiAvailable">
+            <span>{{ error }}</span>
+            @if (!apiAvailable) {
+                <span class="offline-badge">Offline Mode</span>
+            }
+        </div>
+    }
+
+    <!-- Loading Indicator - Dark Theme -->
+    @if (isLoading[activeTab]) {
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <p class="loading-text">Fetching latest crypto data...</p>
+        </div>
+    }
+
+    <!-- Crypto List - Dark Cards -->
+    @if (!isLoading[activeTab]) {
+        <div class="crypto-list">
+            @for (crypto of getCurrentItems(); track crypto.id) {
+                <app-crypto-card
+                    [name]="crypto.name"
+                    [symbol]="crypto.symbol"
+                    [price]="crypto.price"
+                    [change]="crypto.priceChange"
+                    [id]="crypto.id"
+                    (cardClick)="onCryptoClick($event)"
+                    (favoriteToggle)="onFavoriteToggle($event)">
+                </app-crypto-card>
+            }
+        </div>
+    }
+
+    <!-- Newest Items Section - Dark Theme -->
+    <div class="newest-items-section">
+        <div class="section-header">
+            <h3 class="section-title">Newest Items</h3>
+            <a href="#" class="view-all-link">VIEW ALL <span class="arrow">→</span></a>
+        </div>
+        <div class="newest-items-grid">
+            @for (item of newListings.slice(0, 3); track item.id) {
+                <div class="newest-item-card" (click)="onCryptoClick(item)">
+                    <span class="item-name">{{ item.name }}</span>
+                    <span class="item-symbol">{{ item.symbol }}</span>
+                    <span class="item-price">₹{{ formatPrice(item.price) }}</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Last Updated Info - Dark Theme -->
+    <div class="last-updated">
+        <span>Last updated: {{ getLastUpdatedTime() }}</span>
+        @if (!apiAvailable) {
+            <span class="offline-indicator">● Offline Mode</span>
+        }
+    </div>
+
+    <!-- Selected Crypto Details Modal - Dark Theme -->
+    @if (selectedCrypto) {
+        <div class="details-modal" (click)="closeDetails()">
+            <div class="modal-content" (click)="$event.stopPropagation()">
+                <button class="modal-close" (click)="closeDetails()">✕</button>
+                <h3 class="modal-title">{{ selectedCrypto.name }}</h3>
+                <span class="modal-symbol">{{ selectedCrypto.symbol }}</span>
+                
+                <div class="modal-detail-item">
+                    <span class="detail-label">Price</span>
+                    <span class="detail-value price">₹{{ formatPrice(selectedCrypto.price) }}</span>
+                </div>
+                
+                <div class="modal-detail-item">
+                    <span class="detail-label">24h Change</span>
+                    <span class="detail-value" [class]="getPriceChangeClass(selectedCrypto.priceChange)">
+                        {{ getPriceChangeIcon(selectedCrypto.priceChange) }} {{ selectedCrypto.priceChange | absolute }}%
+                    </span>
+                </div>
+                
+                @if (selectedCrypto.marketCap) {
+                    <div class="modal-detail-item">
+                        <span class="detail-label">Market Cap</span>
+                        <span class="detail-value">₹{{ formatPrice(selectedCrypto.marketCap) }}</span>
+                    </div>
+                }
+                
+                <div class="modal-actions">
+                    <button class="action-btn favorite" (click)="onFavoriteToggle({symbol: selectedCrypto.symbol, isFavorite: !favorites.has(selectedCrypto.symbol)})">
+                        {{ favorites.has(selectedCrypto.symbol) ? '★ Remove' : '☆ Add to Favorites' }}
+                    </button>
+                    <button class="action-btn close" (click)="closeDetails()">Close</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

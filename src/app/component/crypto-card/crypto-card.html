@@ -1,0 +1,50 @@
+<div class="crypto-card" (click)="onCardClick()" [class.favorite]="isFavorite">
+    <!-- Card Header -->
+    <div class="crypto-card-header">
+        <div class="header-left">
+            <h3 class="crypto-name">{{ name }}</h3>
+            <span class="crypto-symbol-badge">{{ symbol }}</span>
+        </div>
+        <div class="header-right">
+            <span class="favorite-icon" (click)="onFavoriteClick($event)">
+                {{ isFavorite ? '★' : '☆' }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Card Body -->
+    <div class="crypto-card-body">
+        <!-- Price Field -->
+        <div class="crypto-form-group">
+            <label class="crypto-label">
+                <span class="crypto-icon">💰</span>
+                Current Price
+            </label>
+            <div class="crypto-value">
+                @if (price > 0) {
+                    <span class="price-value">₹{{ formatPrice(price) }}</span>
+                } @else {
+                    <span class="loading-price">Fetching price...</span>
+                }
+            </div>
+        </div>
+
+        <!-- Change Field -->
+        <div class="crypto-form-group">
+            <label class="crypto-label">
+                <span class="crypto-icon">📈</span>
+                24h Change
+            </label>
+            <div class="crypto-change-value" [class]="getChangeClass()">
+                <span class="change-icon">{{ getChangeIcon() }}</span>
+                <span class="change-text">{{ change | absolute }}%</span>
+            </div>
+        </div>
+
+        <!-- Additional Info (like form footer) -->
+        <div class="crypto-card-footer">
+            <span class="market-cap-text">Market Cap available</span>
+            <span class="trade-link">Trade now →</span>
+        </div>
+    </div>
+</div>
