@@ -1,0 +1,106 @@
+/* Custom Banner Styling */
+.advanced-trade-section {
+    background-color: #ffffff;
+    padding: 100px 0;
+    overflow: hidden;
+}
+
+/* Typography Refinement */
+.advanced-trade-section .title {
+    font-family: "Inter", sans-serif; /* Recommended for a fintech look */
+    font-weight: 700;
+    font-size: 52px;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    color: #050505;
+    margin-bottom: 30px;
+}
+
+/* Feature List Styling */
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 45px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateX(8px);
+}
+
+.icon-wrapper {
+    min-width: 32px;
+    height: 32px;
+    background: #f4f4f7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 18px;
+    color: #0052ff; /* Coinbase-style blue for the check */
+}
+
+.feature-text {
+    font-size: 18px;
+    line-height: 1.5;
+    color: #5b616e;
+    margin: 0;
+}
+
+/* The Image Container - Creating the "App View" */
+.image-container-dark {
+    background: #000000;
+    border-radius: 48px;
+    padding: 40px;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+}
+
+.image-container-dark:hover {
+    transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+    box-shadow: -20px 40px 100px rgba(0, 0, 0, 0.2);
+}
+
+.trade-image {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    display: block;
+}
+
+/* Button Styling */
+.btn-learn-more {
+    display: inline-block;
+    background: #000000;
+    color: #ffffff !important;
+    padding: 18px 48px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.btn-learn-more:hover {
+    background: #222222;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 991px) {
+    .advanced-trade-section .title {
+        font-size: 36px;
+    }
+    .image-container-dark {
+        margin-top: 50px;
+        padding: 20px;
+    }
+}

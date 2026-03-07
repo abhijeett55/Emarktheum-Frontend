@@ -7,8 +7,8 @@
 /bazel-out
 
 
-emarktheum/src/environment/environment.ts
-emarktheum/src/environment/environment*.ts
+emarktheum/app/environment/environment.ts
+emarktheum/app/environment/environment*.ts
 
 
 # Node

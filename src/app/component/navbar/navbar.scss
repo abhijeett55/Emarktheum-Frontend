@@ -11,6 +11,24 @@ list-style:none;
 margin:0;
 }
 
+.dark-theme {
+  background-color: #121212;
+  color: white;
+}
+
+.dark-theme .rn-header {
+  background: #1e1e1e;
+}
+
+.theme-btn{
+  margin-right:15px;
+  padding:6px 12px;
+  border-radius:6px;
+  border:none;
+  cursor:pointer;
+}
+
+
 .mainmenu a{
 text-decoration:none;
 font-weight:500;
