@@ -15,10 +15,12 @@ export class Register implements  OnInit {
     username: string | null;
     email: string | null;
     password: string | null;
+    confirmpassword: string | null;
   } = {
     username: null,
     email : null,
-    password : null
+    password : null,
+    confirmpassword : null
   };
 
 
@@ -34,12 +36,19 @@ export class Register implements  OnInit {
   }
 
   async onSubmit() : Promise<void> {
-    const { username , email, password } = this.form;
+    const { username , email, password, confirmpassword } = this.form;
 
-    if(!username || !email || !password) {
+    if(!username || !email || !password || !confirmpassword) {
       this.errorMessage = 'All fields are required';
       return;
     }
+
+    if (password !== confirmpassword) {
+      this.errorMessage = "Passwords do not match";
+      this.isSignUpFailed = true;
+      return;
+  }
+
 
     this.auth.register(username,email, password).subscribe({
       next: data => {

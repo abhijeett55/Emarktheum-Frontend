@@ -15,6 +15,10 @@
             <a  routerLink="/explore">Explore</a>
           </li>
 
+          <li>
+            <a  routerLink="/explore">See More Assets</a>
+          </li>
+
           <li *ngIf="isLoggedIn && showAdminBoard">
             <a routerLink="/transactions">Transactions</a>
           </li>
@@ -36,12 +40,12 @@
 
         <!-- LOGIN -->
         <a *ngIf="!isLoggedIn" class="btn btn-primary" routerLink="/login">
-          Sign in
+          Login
         </a>
 
         <!-- SIGNUP -->
         <a *ngIf="!isLoggedIn" class="btn btn-secondary" routerLink="/register">
-          Sign up
+          Register
         </a>
 
         <!-- PROFILE -->

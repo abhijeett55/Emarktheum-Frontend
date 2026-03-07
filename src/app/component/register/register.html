@@ -7,7 +7,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-12">
                 <ul class="breadcrumb-list">
-                    <li class="item"><a href="/">Home</a></li>
+                    <li class="item"><a routerlink="/">Home</a></li>
                     <li class="separator"><i class="feather-chevron-right"></i></li>
                     <li class="item current">Sign Up</li>
                 </ul>
@@ -94,8 +94,8 @@
                             <label for="exampleInputPassword1" class="form-label">Re Password</label>
                             <input type="password" id="exampleInputPassword1"
                             class="form-control"
-                            name="password"
-                            [(ngModel)]="form.password"
+                            name="confirmpassword"
+                            [(ngModel)]="form.confirmpassword"
                             required
                             minlength="6"
                             #password="ngModel"
@@ -114,8 +114,8 @@
                             <label class="rn-check-box-label" for="exampleCheck1">Allow to all tearms &
                                 condition</label>
                         </div>
-                        <button type="submit" class="btn btn-primary mr--15">Sign Up</button>
-                        <a href="/login" class="btn btn-primary-alta">Log In</a>
+                        <button type="submit" class="btn btn-primary mr--15">Submit</button>
+                        
 
                         <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">
                             Signup failed!<br />{{ errorMessage }}
