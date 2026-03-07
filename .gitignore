@@ -6,7 +6,10 @@
 /out-tsc
 /bazel-out
 
-/environment.environment
+
+emarktheum/src/environment/environment.ts
+emarktheum/src/environment/environment*.ts
+
 
 # Node
 /node_modules
