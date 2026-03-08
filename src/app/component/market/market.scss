@@ -1,132 +1,98 @@
-// COMMENT OUT or REMOVE these conflicting styles at the top:
-// .crypto-card {
-//   border-radius:10px;
-//   padding:15px;
-//   text-align:center;
-//   margin-bottom:20px;
-//   background:#fff;  // ← This white background is the problem!
-//   box-shadow:0 2px 10px rgba(0,0,0,0.1);
-// }
-
-// .crypto-card img {
-//   width:40px;
-//   margin-bottom:10px;
-// }
-
-// Keep these
-.green {
-  color: green;
+// Container and Typography
+.container {
+  max-width: 1400px;
 }
 
-.red {
-  color: red;
+.gradient-text {
+  background: linear-gradient(135deg, #ffffff 0%, #a1a1a1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
-/* Market Dropdown */
-.market-dropdown {
-  position: relative;
-  z-index: 100;
-
-  .dropdown-toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border-radius: 30px;
-    background: rgba(30, 25, 45, 0.5);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 500;
-
-    i {
-      font-size: 1.2rem;
-      color: #a18cd1;
-    }
-
-    &:hover {
-      background: rgba(40, 35, 55, 0.6);
-      border-color: rgba(161, 140, 209, 0.3);
-      transform: translateY(-2px);
-    }
-  }
-
-  .dropdown-menu {
-    position: absolute;
-    top: 120%;
-    left: 0;
-    min-width: 200px;
-    background: rgba(20, 15, 35, 0.8);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    padding: 8px;
-    margin-top: 5px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-
-    .dropdown-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 12px;
-      color: rgba(255, 255, 255, 0.8);
-      cursor: pointer;
-      transition: all 0.2s ease;
-
-      i {
-        font-size: 1.2rem;
-        color: #a18cd1;
-      }
-
-      &:hover {
-        background: rgba(161, 140, 209, 0.15);
-        color: white;
-        transform: translateX(5px);
-      }
-    }
-  }
-}
-
-/* Clickable Styles - Make sure these are properly defined */
-.clickable {
-  cursor: pointer !important;
+// Glassmorphism Base
+.glass-effect {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   transition: all 0.3s ease;
-  position: relative;
-  z-index: 10;
+}
+
+// Toggle Buttons
+.toggle-buttons {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px;
+  border-radius: 12px;
   
-  &:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-  }
-}
-
-// Ensure the card content doesn't block clicks
-.crypto-card.clickable .card-content,
-.nft-card.clickable .nft-info {
-  cursor: pointer;
-}
-
-// Make sure buttons don't inherit the cursor change
-.btn {
-  cursor: pointer;
-  position: relative;
-  z-index: 20;
-}
-
-// Fix for action buttons - they should not trigger card click
-.action-buttons,
-.nft-action-buttons {
-  cursor: default;
-  position: relative;
-  z-index: 30;
-  
-  .btn {
+  .toggle-btn {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    color: #888;
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
+    background: transparent;
+
+    &.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    &:hover:not(.active) {
+      color: #ccc;
+    }
   }
 }
 
-/* Rest of your existing CSS remains the same */
-/* ... (keep all your existing styles from after the dropdown) ... */
+// Market Stats
+.bg-glass {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-weight: 400;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+// Cards Logic
+.action-card {
+  border-radius: 16px;
+  cursor: pointer;
+  overflow: hidden; // Clips NFT images to border radius
+
+  &:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+}
+
+// NFT Specific Styling
+.nft-img {
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1a1a1a; // Prevents white flashes if image loads slow
+}
+
+// Animation Staggering
+.row > div {
+  animation: fadeIn 0.5s ease backwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

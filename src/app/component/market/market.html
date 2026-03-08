@@ -2,28 +2,20 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div class="d-flex align-items-center gap-3">
       <h2 class="gradient-text mb-0">Market</h2>
-      
-      <!-- Market Type Dropdown -->
-      <div class="market-dropdown">
-        <div class="dropdown-toggle glass-effect" (click)="toggleDropdown()">
-          <i class="bi" [ngClass]="{
-            'bi-currency-bitcoin': marketType === 'crypto',
-            'bi-image': marketType === 'nft'
-          }"></i>
-          <span>{{ marketType === 'crypto' ? 'Cryptocurrencies' : 'NFTs' }}</span>
-          <i class="bi bi-chevron-down ms-2"></i>
-        </div>
-        
-        <div class="dropdown-menu glass-effect" *ngIf="dropdownOpen">
-          <div class="dropdown-item" (click)="selectMarketType('crypto')">
-            <i class="bi bi-currency-bitcoin"></i>
-            <span>Cryptocurrencies</span>
-          </div>
-          <div class="dropdown-item" (click)="selectMarketType('nft')">
-            <i class="bi bi-image"></i>
-            <span>NFTs</span>
-          </div>
-        </div>
+
+      <div class="toggle-buttons d-flex gap-2">
+        <button class="toggle-btn glass-effect" 
+                [class.active]="marketType === 'crypto'"
+                (click)="marketType = 'crypto'">
+          <i class="bi bi-currency-bitcoin me-1"></i>
+          Cryptocurrencies
+        </button>
+        <button class="toggle-btn glass-effect"
+                [class.active]="marketType === 'nft'"
+                (click)="marketType = 'nft'">
+          <i class="bi bi-image me-1"></i>
+          NFTs
+        </button>
       </div>
     </div>
 
@@ -43,129 +35,64 @@
     </div>
   </div>
 
-  <!-- Cryptocurrencies Grid -->
-  <div class="row g-4" *ngIf="marketType === 'crypto'">
-    <div class="col-lg-2 col-md-3 col-sm-4 col-6" 
-         *ngFor="let coin of cryptos; let i = index"
-         [@cardAnimation]>
-      <!-- Make entire crypto card clickable -->
-      <div class="crypto-card glass-effect clickable" (click)="navigateToCoin(coin.id)">
-        <div class="card-content">
-          <div class="coin-image-wrapper">
-            <img [src]="coin.image" [alt]="coin.name" class="coin-image">
-            <div class="rank-badge" *ngIf="coin.market_cap_rank">#{{coin.market_cap_rank}}</div>
-          </div>
-          
-          <div class="coin-info">
-            <h5 class="coin-name">{{coin.name}}</h5>
-            <p class="coin-symbol">{{coin.symbol | uppercase}}</p>
-            
-            <h4 class="coin-price">${{coin.current_price | number:'1.2-2'}}</h4>
-            
-            <p class="price-change mb-3" 
-               [class.green]="coin.price_change_percentage_24h > 0"
-               [class.red]="coin.price_change_percentage_24h < 0">
-              <i class="bi" [ngClass]="{
-                'bi-arrow-up-short': coin.price_change_percentage_24h > 0,
-                'bi-arrow-down-short': coin.price_change_percentage_24h < 0
-              }"></i>
-              {{coin.price_change_percentage_24h | number:'1.2-2'}}%
-            </p>
-          </div>
-
-          <!-- Action buttons with stopPropagation to prevent card click -->
-          <div class="action-buttons" (click)="$event.stopPropagation()">
-            <button class="btn btn-buy" (click)="navigateToBuy(coin.id)">
-              <i class="bi bi-coin me-1"></i>Buy
-            </button>
-            <button class="btn btn-sell" (click)="navigateToSell(coin.id)">
-              <i class="bi bi-cash-stack me-1"></i>Sell
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- NFTs Grid -->
-  <div class="row g-4" *ngIf="marketType === 'nft'">
-    <div class="col-lg-3 col-md-4 col-sm-6 col-6" 
-         *ngFor="let nft of nfts; let i = index"
-         [@cardAnimation]>
-      <!-- Make entire NFT card clickable -->
-      <div class="nft-card glass-effect clickable" (click)="navigateToNFTPage(nft.id)">
-        <div class="nft-image-wrapper">
-          <img [src]="nft.image" [alt]="nft.name" class="nft-image">
-          <div class="nft-badge" [ngClass]="nft.rarity.toLowerCase()">
-            {{nft.rarity}}
-          </div>
-          <div class="nft-collection-badge" *ngIf="nft.collection">
-            {{nft.collection}}
-          </div>
-        </div>
-        
-        <div class="nft-info">
-          <div class="d-flex justify-content-between align-items-start mb-2">
-            <h5 class="nft-name">{{nft.name}}</h5>
-            <small class="nft-id">#{{nft.tokenId}}</small>
-          </div>
-          
-          <p class="nft-creator">
-            <i class="bi bi-person-circle me-1"></i>{{nft.creator}}
-          </p>
-          
-          <div class="nft-stats">
-            <div class="price-info">
-              <span class="label">Current Price</span>
-              <span class="value">
-                <i class="bi bi-currency-ethereum"></i>
-                {{nft.currentPrice | number:'1.2-2'}} ETH
-              </span>
-            </div>
-            <div class="price-info">
-              <span class="label">Floor Price</span>
-              <span class="value text-muted">
-                <i class="bi bi-currency-ethereum"></i>
-                {{nft.floorPrice | number:'1.2-2'}} ETH
-              </span>
-            </div>
-          </div>
-          
-          <p class="price-change mt-2" 
-             [class.green]="nft.priceChange24h > 0"
-             [class.red]="nft.priceChange24h < 0">
-            <i class="bi" [ngClass]="{
-              'bi-arrow-up-short': nft.priceChange24h > 0,
-              'bi-arrow-down-short': nft.priceChange24h < 0
-            }"></i>
-            {{nft.priceChange24h}}% (24h)
-          </p>
-        </div>
-
-        <!-- Action buttons with stopPropagation to prevent card click -->
-        <div class="nft-action-buttons" (click)="$event.stopPropagation()">
-          <button class="btn btn-buy" (click)="navigateToBuyNFT(nft.id)">
-            <i class="bi bi-cart me-1"></i>Buy Now
-          </button>
-          <button class="btn btn-sell" (click)="navigateToSellNFT(nft.id)">
-            <i class="bi bi-tag me-1"></i>Place Bid
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Loading Indicator -->
-  <div class="text-center mt-4" *ngIf="loading">
-    <div class="spinner-border text-light" role="status">
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
+    <p class="mt-2 text-white-50">Fetching market data...</p>
   </div>
 
-  <!-- Load More Button -->
-  <div class="text-center mt-4" *ngIf="!loading && hasMore">
-    <button class="btn btn-load-more glass-effect" (click)="loadMore()">
-      <i class="bi bi-arrow-down-circle me-2"></i>Load More
-    </button>
+  <div *ngIf="!loading">
+    
+    <div *ngIf="marketType === 'crypto'" class="row g-4">
+      <div *ngFor="let coin of cryptos; trackBy: trackByCoinId" 
+           class="col-12 col-md-6 col-lg-4 col-xl-3"
+           [@cardAnimation]>
+        <div class="card glass-effect h-100 action-card" (click)="navigateToCoin(coin.id)">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img [src]="coin.image" [alt]="coin.name" class="me-2" style="width: 32px; height: 32px;">
+              <h5 class="card-title mb-0 text-white">{{ coin.name }}</h5>
+            </div>
+            <div class="d-flex justify-content-between align-items-end">
+              <span class="text-white-50 small">{{ coin.symbol | uppercase }}</span>
+              <span class="text-white fw-bold">${{ coin.current_price | number:'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="marketType === 'nft'" class="row g-4">
+      <div *ngFor="let nft of nfts; trackBy: trackByNFTId" 
+           class="col-12 col-md-6 col-lg-4 col-xl-3"
+           [@cardAnimation]>
+        <div class="card glass-effect h-100 action-card" (click)="navigateToNFTPage(nft.id)">
+          <div class="card-body p-0">
+            <img [src]="nft.image" class="card-img-top nft-img" [alt]="nft.name">
+            <div class="p-3">
+              <h5 class="card-title text-white text-truncate">{{ nft.name }}</h5>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle">{{ nft.rarity }}</span>
+                <span class="text-white fw-bold">{{ nft.floorPrice }} ETH</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-5" *ngIf="hasMore">
+      <button class="btn btn-outline-light px-5 glass-effect" (click)="loadMore()">
+        <i class="bi bi-arrow-down-circle me-2"></i>Load More
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && ((marketType === 'crypto' && cryptos.length === 0) || (marketType === 'nft' && nfts.length === 0))" 
+       class="text-center my-5">
+    <i class="bi bi-exclamation-circle text-white-50 display-1"></i>
+    <p class="text-white mt-3">No data available at the moment.</p>
+    <button class="btn btn-primary mt-2" (click)="retry()">Retry Connection</button>
   </div>
 </div>

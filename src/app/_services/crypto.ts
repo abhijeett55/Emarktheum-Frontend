@@ -14,9 +14,20 @@ export class CryptoService {
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Get top gainers (24h)
-   */
+  getCoins(page: number): Observable<any[]> {
+
+  const limit = 100;
+  const offset = (page - 1) * limit;
+
+  return this.http.get<any>(`https://api.coincap.io/v2/assets`, {
+    params: { limit, offset }
+  }).pipe(
+    map(res => res.data)
+  );
+}
+
+
+
   getTopGainers(limit: number = 10): Observable<CryptoData[]> {
     const cacheKey = 'topGainers';
     const cached = this.getCachedData(cacheKey);
@@ -49,10 +60,6 @@ export class CryptoService {
     );
   }
 
-
-  /**
-   * Get weekly gainers
-   */
   getWeeklyGainers(limit: number = 10): Observable<CryptoData[]> {
     const cacheKey = 'weeklyGainers';
     const cached = this.getCachedData(cacheKey);
@@ -90,17 +97,6 @@ export class CryptoService {
     );
   }
 
-  getCoins(page: number) {
-  return this.http.get(
-    `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=${page}&sparkline=false`
-  );
-}
-
-
-  
-  /**
-   * Get top by market cap
-   */
   getTopByMarketCap(limit: number = 10): Observable<CryptoData[]> {
     const cacheKey = 'topByMarketCap';
     const cached = this.getCachedData(cacheKey);
@@ -125,10 +121,6 @@ export class CryptoService {
       })
     );
   }
-
-  /**
-   * Get new listings (approximated by newer assets)
-   */
   getNewListings(limit: number = 10): Observable<CryptoData[]> {
     const cacheKey = 'newListings';
     const cached = this.getCachedData(cacheKey);

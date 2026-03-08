@@ -15,6 +15,8 @@ export interface NFT {
   chain?: 'Ethereum' | 'Polygon' | 'Solana' | 'Binance';
 }
 
+
+
 export interface NFTTransaction {
   id: string;
   nftId: string;

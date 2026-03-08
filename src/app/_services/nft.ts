@@ -20,18 +20,43 @@ export class NFTService {
    * Get NFTs with pagination
    * CoinGecko free tier limitations: 10-50 calls per minute
    */
-  getNFTs(page: number = 1, limit: number = 20): Observable<NFT[]> {
-    const url = `${this.apiUrl}/nfts/list?per_page=100&page=${page}`;
+  // src/app/_services/nft.ts
+getNFTs(page: number = 1, limit: number = 20): Observable<NFT[]> {
+  const url = `${this.apiUrl}/nfts/list?per_page=100&page=${page}`;
+  
+  return this.http.get<any[]>(url).pipe(
+    // REMOVE page and limit here if the function doesn't use them anymore
+    map(response => this.transformNFTData(response)), 
+    catchError(error => {
+      console.error('Error fetching NFTs:', error);
+      return of(this.getMockNFTs(page, limit));
+    })
+  );
+}
+
+private transformNFTData(apiResponse: any[]): NFT[] {
+  if (!apiResponse || !Array.isArray(apiResponse)) return [];
+
+  return apiResponse.map((item, index) => {
+    // Generate a reliable fallback image if the primary one fails
+    const fallbackImage = `https://api.dicebear.com/7.x/identicon/svg?seed=${item.id}`;
     
-    return this.http.get<any[]>(url).pipe(
-      map(response => this.transformNFTData(response, page, limit)),
-      catchError(error => {
-        console.error('Error fetching NFTs from CoinGecko:', error);
-        
-        return of(this.getMockNFTs(page, limit));
-      })
-    );
-  }
+    return {
+      id: item.id,
+      name: item.name,
+      // Try Coinbase first, but the template should handle errors
+      image: `https://api.dicebear.com/7.x/identicon/svg?seed=${item.id}`,
+      collection: item.symbol || 'Unknown',
+      currentPrice: 0,
+      creator: 'Unknown',
+      tokenId: index,
+      floorPrice: 0,
+      priceChange24h: 0,
+      rarity: this.getRandomRarity(), // Better than hardcoded 'Common'
+      chain: 'Ethereum'
+    };
+  });
+}
 
   /**
    * Get NFT by ID
@@ -83,35 +108,6 @@ export class NFTService {
       })
     );
   }
-
-  /**
-   * Transform CoinGecko response to your NFT interface
-   */
-  private transformNFTData(apiResponse: any[], page: number, limit: number): NFT[] {
-    if (!apiResponse || !Array.isArray(apiResponse)) {
-      return [];
-    }
-
-    const startIndex = (page - 1) * limit;
-    const paginatedData = apiResponse.slice(startIndex, startIndex + limit);
-    
-    return paginatedData.map((item, index) => ({
-      id: item.id || `nft-${Date.now()}-${index}`,
-      name: item.name || 'Unknown NFT',
-      image: item.image?.small || item.image?.thumb || `https://via.placeholder.com/400x400/2a1e3c/a18cd1?text=NFT`,
-      creator: item.creator || item.contract_address?.slice(0, 10) || '0xUnknown',
-      collection: item.asset_platform_id || item.symbol?.toUpperCase() || 'Unknown',
-      tokenId: Math.floor(Math.random() * 10000), // CoinGecko doesn't provide tokenId in list endpoint
-      currentPrice: item.floor_price || Math.random() * 5 + 0.1,
-      floorPrice: item.floor_price || Math.random() * 4 + 0.05,
-      priceChange24h: item.floor_price_in_usd_24h_percentage_change || (Math.random() * 30 - 15),
-      rarity: this.getRandomRarity(),
-      description: item.description || `A unique NFT from the ${item.name || 'Unknown'} collection`,
-      contractAddress: item.contract_address,
-      chain: this.getChainFromPlatform(item.asset_platform_id)
-    }));
-  }
-
   /**
    * Transform single NFT response
    */

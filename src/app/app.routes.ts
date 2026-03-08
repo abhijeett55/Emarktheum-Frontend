@@ -32,7 +32,7 @@ export const routes: Routes = [
 
   { path: 'g-announce', component: GAnnounce, canActivate: [RoleGuard] },
 
-  { path: 'market', component: Market, canActivate: [RoleGuard] },
+  { path: 'market', component: Market },
 
 
   { path: '**', redirectTo: '' }
