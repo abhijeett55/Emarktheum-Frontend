@@ -1,9 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CryptoCard } from '../crypto-card/crypto-card';
-import { Crypto, CryptoData } from '../../_services/crypto';
+import { CryptoService } from '../../_services/crypto';
+import { Crypto } from '../../models/crypto';
 import { AbsolutePipe } from '../../pipes/absolute-pipe';
 import { Subscription, interval } from 'rxjs';
+
+interface CryptoData {
+  id: string;
+  name: string;
+  symbol: string;
+  price: number;
+  priceChange: number;
+  marketCap: number;
+  volume: number;
+  image?: string;
+}
 
 type TimePeriod = '24h' | '7d' | '30d';
 
@@ -50,7 +62,7 @@ export class MiniDashboard implements OnInit, OnDestroy {
   ];
   selectedPeriod: TimePeriod = '24h';
 
-  constructor(private cryptoService: Crypto) {
+  constructor(private cryptoService: CryptoService) {
     console.log('MiniDashboard constructor called');
   }
 
@@ -92,6 +104,32 @@ export class MiniDashboard implements OnInit, OnDestroy {
   }
 
   /**
+   * Transform API coin to CryptoData format
+   */
+  private transformCoin(coin: any): CryptoData {
+    return {
+      id: coin.id || `coin-${Math.random()}`,
+      name: coin.name || 'Unknown',
+      symbol: (coin.symbol || '???').toUpperCase(),
+      price: coin.current_price || coin.price || 0,
+      priceChange: coin.price_change_percentage_24h || coin.priceChange || 0,
+      marketCap: coin.market_cap || coin.marketCap || 0,
+      volume: coin.total_volume || coin.volume || 0,
+      image: coin.image || `https://via.placeholder.com/32/2a1e3c/a18cd1?text=${(coin.symbol || '??').toUpperCase()}`
+    };
+  }
+
+  /**
+   * Transform array of API coins to CryptoData array
+   */
+  private transformCoins(data: any[]): CryptoData[] {
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    return data.map(coin => this.transformCoin(coin));
+  }
+
+  /**
    * Load mock data immediately to ensure UI shows something
    */
   private loadMockData(): void {
@@ -120,10 +158,10 @@ export class MiniDashboard implements OnInit, OnDestroy {
     console.log('Loading tradable data...');
     
     this.cryptoService.getTopByMarketCap(6).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         console.log('Tradable data received:', data);
         if (data && data.length > 0) {
-          this.tradableCoins = data;
+          this.tradableCoins = this.transformCoins(data);
           this.apiAvailable = true;
           this.error = null;
         } else {
@@ -135,7 +173,7 @@ export class MiniDashboard implements OnInit, OnDestroy {
         this.isLoading.tradable = false;
         this.lastUpdated = new Date();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading tradable data:', err);
         this.apiAvailable = false;
         this.error = 'Using offline data - API unavailable';
@@ -170,14 +208,14 @@ export class MiniDashboard implements OnInit, OnDestroy {
     }
     
     observable.subscribe({
-      next: (data) => {
+      next: (data: any) => {
         console.log('Gainers data received:', data);
         if (data && data.length > 0) {
-          this.topGainers = data;
+          this.topGainers = this.transformCoins(data);
         }
         this.isLoading.gainers = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading gainers:', err);
         this.isLoading.gainers = false;
         // Keep existing mock data
@@ -193,14 +231,14 @@ export class MiniDashboard implements OnInit, OnDestroy {
     console.log('Loading weekly gainers...');
     
     this.cryptoService.getWeeklyGainers(6).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         console.log('Weekly gainers received:', data);
         if (data && data.length > 0) {
-          this.weeklyGainers = data;
+          this.weeklyGainers = this.transformCoins(data);
         }
         this.isLoading.weekly = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading weekly gainers:', err);
         this.isLoading.weekly = false;
       }
@@ -215,14 +253,14 @@ export class MiniDashboard implements OnInit, OnDestroy {
     console.log('Loading new listings...');
     
     this.cryptoService.getNewListings(6).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         console.log('New listings received:', data);
         if (data && data.length > 0) {
-          this.newListings = data;
+          this.newListings = this.transformCoins(data);
         }
         this.isLoading.new = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading new listings:', err);
         this.isLoading.new = false;
       }
@@ -390,11 +428,11 @@ export class MiniDashboard implements OnInit, OnDestroy {
   testAPI(): void {
     console.log('Testing API connection...');
     this.cryptoService.getTopByMarketCap(1).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         console.log('✅ API Test Success:', data);
         alert(`API Working! Received: ${JSON.stringify(data)}`);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('❌ API Test Failed:', err);
         alert(`API Error: ${err.message}`);
       }

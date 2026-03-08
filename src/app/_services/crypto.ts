@@ -1,21 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Crypto as CryptoData } from '../models/crypto';
 import { Observable, map, catchError, of } from 'rxjs';
 
-export interface CryptoData {
-  id: string;
-  name: string;
-  symbol: string;
-  price: number;
-  priceChange: number;
-  marketCap?: number;
-  volume?: number;
-}
 
 @Injectable({
   providedIn: 'root',
 })
-export class Crypto {
+export class CryptoService {
   private apiUrl = 'https://api.coincap.io/v2';
   private cacheTime = 5 * 60 * 1000; // 5 minutes
   private usdToInr = 83.5; // Approximate conversion rate
@@ -57,6 +49,7 @@ export class Crypto {
       })
     );
   }
+
 
   /**
    * Get weekly gainers (approximated from 24h data since CoinCap doesn't have weekly)
