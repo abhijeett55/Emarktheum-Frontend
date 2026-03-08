@@ -7,53 +7,71 @@
       <nav class="mainmenu-nav">
         <ul class="mainmenu">
 
-          <li>
-            <a *ngIf="!showAdminBoard" routerLink="/">Dashboard</a>
-          </li>
+  <!-- Dashboard (only logged in users) -->
+  <li *ngIf="isLoggedIn">
+    <a routerLink="/">Dashboard</a>
+  </li>
 
-          <li>
-            <a  routerLink="/explore">Explore</a>
-          </li>
+  <!-- Explore (public page) -->
+  <li>
+    <a routerLink="/explore">Explore</a>
+  </li>
 
-          <li>
-            <a  routerLink="/explore">See More Assets</a>
-          </li>
+  <!-- Assets -->
+  <li *ngIf="isLoggedIn">
+    <a routerLink="/explore">See More Assets</a>
+  </li>
 
-          <li *ngIf="isLoggedIn && showAdminBoard">
-            <a routerLink="/transactions">Transactions</a>
-          </li>
+  <!-- Admin Only -->
+  <li *ngIf="isLoggedIn && showAdminBoard">
+    <a routerLink="/transactions">Transactions</a>
+  </li>
 
-          <li *ngIf="isLoggedIn && showAdminBoard">
-            <a  routerLink="/g-announce">Requests</a>
-          </li>
+  <li *ngIf="isLoggedIn && showAdminBoard">
+    <a routerLink="/g-announce">Requests</a>
+  </li>
 
-        </ul>
+  <li *ngIf="isLoggedIn && showAdminBoard">
+    <a routerLink="/market">Markets</a>
+  </li>
+
+</ul>
+
       </nav>
 
       <!-- RIGHT : SEARCH + BUTTONS -->
+
       <div class="header-right">
 
-        <!-- SEARCH -->
-        <div class="search-box">
-          <input type="text" placeholder="Search">
-        </div>
+  <!-- SEARCH -->
+  <div class="search-box">
+    <input type="text" placeholder="Search">
+  </div>
 
-        <!-- LOGIN -->
-        <a *ngIf="!isLoggedIn" class="btn btn-primary" routerLink="/login">
-          Login
-        </a>
+  <!-- LOGIN -->
+  <a *ngIf="!isLoggedIn" class="btn btn-primary" routerLink="/login">
+    Login
+  </a>
 
-        <!-- SIGNUP -->
-        <a *ngIf="!isLoggedIn" class="btn btn-secondary" routerLink="/register">
-          Register
-        </a>
+  <!-- REGISTER -->
+  <a *ngIf="!isLoggedIn" class="btn btn-secondary" routerLink="/register">
+    Register
+  </a>
 
-        <!-- PROFILE -->
-        <div *ngIf="isLoggedIn" class="profile">
-          <img src="assets/images/icons/boy-avater.png" routerLink="/profile">
-        </div>
+  <!-- PROFILE -->
+  <div *ngIf="isLoggedIn" class="profile">
 
-      </div>
+    <img src="assets/images/icons/boy-avater.png"
+         routerLink="/profile">
+
+    <button class="btn btn-danger" (click)="logout()">
+      Logout
+    </button>
+
+  </div>
+
+</div>
+
 
     </div>
   </div>

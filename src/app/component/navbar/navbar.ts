@@ -36,18 +36,26 @@ export class Navbar implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isLoggedIn = !!this.tokenStorageService.getToken();
 
-    if(this.isLoggedIn) {
-      const user = this.tokenStorageService.getUser();
-      this.roles = user.roles;
+  const token = this.tokenStorageService.getToken();
 
-      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
-      this.showUserBoard = this.roles.includes('ROLE_USER');
+  if(token){
 
-      this.username = user.username;
-    }
+    this.isLoggedIn = true;
+
+    const user = this.tokenStorageService.getUser();
+
+    this.roles = user.roles || [];
+
+    this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
+    this.showUserBoard = this.roles.includes('ROLE_USER');
+
+    this.username = user.username;
+
   }
+
+}
+
 
   logout() : void {
     this.tokenStorageService.signOut();

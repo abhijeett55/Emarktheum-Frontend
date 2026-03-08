@@ -16,44 +16,44 @@ const httpOptions = {
 export class Auth {
   constructor(private httpClient: HttpClient) {}
 
-  // login(username: string, password: string) : Observable<any> {
-  //   return this.httpClient.post( AUTH_API + 'signin',{
-  //     username,
-  //     password
-  //   }, httpOptions
-  //   );
-  // }
-
-  // register(username: string,email: string ,password: string): Observable<any> {
-  //   return this.httpClient.post(AUTH_API + 'register',{
-  //     username,
-  //     email,
-  //     password
-  //   }, httpOptions);
-  // }
-
-  //comment is the original this is for testing
-  login(username: string, password: string) {
-
-  console.log("Fake login request:", username, password);
-
-  return of({
-    id: 1,
-    username: username,
-    email: "test@test.com",
-    roles: ["ROLE_USER"],
-    accessToken: "fake-jwt-token"
-  });
-
-}
-
+  login(username: string, password: string) : Observable<any> {
+    return this.httpClient.post( AUTH_API + 'signin',{
+      username,
+      password
+    }, httpOptions
+    );
+  }
 
   register(username: string,email: string ,password: string): Observable<any> {
-
-  console.log("Fake register:", username, email, password);
-
-  return of({
-    message: "User registered successfully"
-  });
+    return this.httpClient.post(AUTH_API + 'register',{
+      username,
+      email,
+      password
+    }, httpOptions);
+  }
 }
-}
+  //comment is the original this is for testing
+//   login(username: string, password: string) {
+
+//   console.log("Fake login request:", username, password);
+
+//   return of({
+//     id: 1,
+//     username: username,
+//     email: "test@test.com",
+//     roles: ["ROLE_USER"],
+//     accessToken: "fake-jwt-token"
+//   });
+
+// }
+
+
+//   register(username: string,email: string ,password: string): Observable<any> {
+
+//   console.log("Fake register:", username, email, password);
+
+//   return of({
+//     message: "User registered successfully"
+//   });
+// }
+// }

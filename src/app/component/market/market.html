@@ -1,0 +1,42 @@
+<div class="container">
+
+<h2>All Cryptocurrencies</h2>
+
+<div class="row">
+
+<div class="col-lg-2 col-md-3 col-sm-4"
+*ngFor="let coin of cryptos">
+
+<div class="crypto-card">
+
+<img [src]="coin.image">
+
+<h5>{{coin.name}}</h5>
+
+<p>{{coin.symbol | uppercase}}</p>
+
+<h4>${{coin.current_price}}</h4>
+
+<p
+[class.green]="coin.price_change_percentage_24h > 0"
+[class.red]="coin.price_change_percentage_24h < 0">
+
+{{coin.price_change_percentage_24h | number:'1.2-2'}} %
+
+</p>
+
+<button class="btn btn-success">
+Buy
+</button>
+
+<button class="btn btn-danger">
+Sell
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>

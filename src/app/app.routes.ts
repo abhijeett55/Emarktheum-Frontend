@@ -9,6 +9,8 @@ import { ProductDetails } from './component/product-details/product-details';
 import { Explore } from './component/explore/explore';
 import { Profile } from './component/profile/profile';
 import { Register } from './component/register/register';
+import { Market } from './component/market/market';
+
 import { TransactionComponent } from './component/transaction/transaction';
 
 import { RoleGuard } from './_services/role.guard';
@@ -32,6 +34,9 @@ export const routes: Routes = [
   { path: 'profile', component: Profile, canActivate: [TokenStorageGuard] },
 
   { path: 'g-announce', component: GAnnounce, canActivate: [RoleGuard] },
+
+  { path: 'market', component: Market, canActivate: [RoleGuard] },
+
 
   { path: '**', redirectTo: '' }
 ];
