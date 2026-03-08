@@ -24,6 +24,7 @@
   "private": true,
   "packageManager": "npm@11.4.1",
   "dependencies": {
+    "@angular/animations": "^20.3.16",
     "@angular/common": "^20.0.0",
     "@angular/compiler": "^20.0.0",
     "@angular/core": "^20.0.0",
@@ -33,6 +34,7 @@
     "@angular/platform-server": "^20.0.0",
     "@angular/router": "^20.0.0",
     "@angular/ssr": "^20.0.0",
+    "animations": "^0.0.0",
     "ethers": "^6.16.0",
     "express": "^5.1.0",
     "firebase": "^12.10.0",

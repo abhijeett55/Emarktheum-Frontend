@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Crypto } from '../../_services/crypto';
+import { Router } from '@angular/router';
+import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 
 @Component({
   selector: 'app-market',
@@ -8,34 +10,45 @@ import { Crypto } from '../../_services/crypto';
   imports: [ CommonModule ],
   templateUrl: './market.html',
   styleUrl: './market.scss',
+  animations: [
+    trigger('cardAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('0.5s ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class Market {
 
   cryptos:any[]=[];
   page=1;
 
-constructor(private cryptoService:Crypto){}
+  constructor(private cryptoService:Crypto, 
+    private router: Router){ }
 
-ngOnInit(){
+  ngOnInit(){
 
-this.loadCoins();
+  this.loadCoins();
 
-}
+  }
 
-loadCoins(){
+  loadCoins(){
 
-for(let i=1;i<=5;i++){
+    for(let i=1;i<=5;i++) {
+      this.cryptoService.getCoins(i).subscribe((data:any) => {
+      this.cryptos=[...this.cryptos,...data];
+      });
+    }
+  }
 
-this.cryptoService.getCoins(i)
-.subscribe((data:any)=>{
+  navigateToBuy(coinId: string) {
+    this.router.navigate(['/buy', coinId]);
+  }
 
-this.cryptos=[...this.cryptos,...data];
-
-});
-
-}
-
-}
+  navigateToSell(coinId: string) {
+    this.router.navigate(['/sell', coinId]);
+  }
 
 
 }
