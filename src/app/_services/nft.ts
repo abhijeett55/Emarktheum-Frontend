@@ -8,12 +8,11 @@ import { NFT } from '../models/nft';
   providedIn: 'root'
 })
 export class NFTService {
-  // CoinGecko API base URL - free tier, no API key required for basic endpoints
   private apiUrl = 'https://api.coingecko.com/api/v3';
   
-  // For NFT data, CoinGecko has specific endpoints
-  private nftEndpoint = '/nfts/list'; // Gets list of all NFTs
-  private nftMarketEndpoint = '/nfts/markets'; // Gets NFT market data
+  
+  private nftEndpoint = '/nfts/list';
+  private nftMarketEndpoint = '/nfts/markets';
 
   constructor(private http: HttpClient) {}
 
@@ -22,14 +21,13 @@ export class NFTService {
    * CoinGecko free tier limitations: 10-50 calls per minute
    */
   getNFTs(page: number = 1, limit: number = 20): Observable<NFT[]> {
-    // CoinGecko doesn't have direct pagination for NFTs, so we'll fetch and paginate
     const url = `${this.apiUrl}/nfts/list?per_page=100&page=${page}`;
     
     return this.http.get<any[]>(url).pipe(
       map(response => this.transformNFTData(response, page, limit)),
       catchError(error => {
         console.error('Error fetching NFTs from CoinGecko:', error);
-        // Fallback to mock data if API fails
+        
         return of(this.getMockNFTs(page, limit));
       })
     );
@@ -51,7 +49,7 @@ export class NFTService {
   }
 
   /**
-   * Get trending NFTs (using CoinGecko's trending search)
+   * Get trending NFTs
    */
   getTrendingNFTs(limit: number = 10): Observable<NFT[]> {
     const url = `${this.apiUrl}/search/trending`;
@@ -74,7 +72,7 @@ export class NFTService {
    * Get NFTs by collection
    */
   getNFTsByCollection(collectionId: string, page: number = 1): Observable<NFT[]> {
-    // CoinGecko has collection endpoints
+    
     const url = `${this.apiUrl}/nfts/${collectionId}/market_chart?days=30`;
     
     return this.http.get<any>(url).pipe(

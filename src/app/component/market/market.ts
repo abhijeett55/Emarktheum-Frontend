@@ -136,23 +136,25 @@ export class Market {
   trackByCoinId(index: number, coin: any): string {
     return coin?.id || index.toString();
   }
+  // In market.ts, verify these methods exist:
 
   navigateToCoin(coinId: string): void {
+  console.log('Navigating to coin:', coinId);
   if (coinId) {
-    console.log('Navigating to coin:', coinId);
     this.router.navigate(['/coin', coinId]);
   }
 }
 
-/**
- * Navigate to NFT details page
- */
 navigateToNFTPage(nftId: string): void {
+  console.log('Navigating to NFT:', nftId);
   if (nftId) {
-    console.log('Navigating to NFT:', nftId);
     this.router.navigate(['/nft', nftId]);
   }
 }
+
+  
+
+
 
 /**
  * Navigate to buy coin page (stopPropagation handles the event)

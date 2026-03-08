@@ -9,8 +9,8 @@ import { Observable, map, catchError, of } from 'rxjs';
 })
 export class CryptoService {
   private apiUrl = 'https://api.coincap.io/v2';
-  private cacheTime = 5 * 60 * 1000; // 5 minutes
-  private usdToInr = 83.5; // Approximate conversion rate
+  private cacheTime = 5 * 60 * 1000;
+  private usdToInr = 83.5;
 
   constructor(private http: HttpClient) {}
 
@@ -25,10 +25,9 @@ export class CryptoService {
       return of(cached);
     }
 
-    // CoinCap.io API - get all assets and sort by change percent
     return this.http.get<any>(`${this.apiUrl}/assets`, {
       params: {
-        limit: 100 // Get more to sort properly
+        limit: 100 
       }
     }).pipe(
       map(response => {
@@ -52,7 +51,7 @@ export class CryptoService {
 
 
   /**
-   * Get weekly gainers (approximated from 24h data since CoinCap doesn't have weekly)
+   * Get weekly gainers
    */
   getWeeklyGainers(limit: number = 10): Observable<CryptoData[]> {
     const cacheKey = 'weeklyGainers';
@@ -62,8 +61,6 @@ export class CryptoService {
       return of(cached);
     }
 
-    // For weekly, we'll use the same data but with a different message
-    // In a real app, you might want to calculate this differently
     return this.http.get<any>(`${this.apiUrl}/assets`, {
       params: {
         limit: 100
@@ -139,8 +136,6 @@ export class CryptoService {
     if (cached) {
       return of(cached);
     }
-
-    // Get all assets and sort by rank (lower rank might be newer)
     return this.http.get<any>(`${this.apiUrl}/assets`, {
       params: {
         limit: 100
@@ -163,17 +158,12 @@ export class CryptoService {
       })
     );
   }
-
-  /**
-   * Transform CoinCap asset to our CryptoData format
-   */
   private transformAsset(asset: any): CryptoData {
     const priceUsd = parseFloat(asset.priceUsd || '0');
     const changePercent = parseFloat(asset.changePercent24Hr || '0');
     const marketCapUsd = parseFloat(asset.marketCapUsd || '0');
     const volumeUsd = parseFloat(asset.volumeUsd24Hr || '0');
     
-    // Convert USD to INR
     const priceInr = priceUsd * this.usdToInr;
     const marketCapInr = marketCapUsd * this.usdToInr;
     const volumeInr = volumeUsd * this.usdToInr;
@@ -189,9 +179,7 @@ export class CryptoService {
     };
   }
 
-  /**
-   * Cache management
-   */
+  /** Cache Management **/
   private cacheData(key: string, data: any[]): void {
     const cache = {
       timestamp: Date.now(),

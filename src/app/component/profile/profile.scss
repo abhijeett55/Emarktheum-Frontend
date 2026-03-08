@@ -1,0 +1,250 @@
+// Profile Info Styles
+.info-row {
+  display: flex;
+  margin-bottom: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  strong {
+    min-width: 80px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+  }
+
+  span {
+    color: white;
+    flex: 1;
+  }
+}
+
+.role-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.role-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.seller {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  }
+
+  &.buyer {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  }
+}
+
+// Empty State Styles
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+
+  .empty-icon {
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
+  }
+
+  h5 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 20px;
+  }
+
+  .btn-create, .btn-explore {
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .btn-create {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+  }
+
+  .btn-explore {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+
+    &:hover {
+      border-color: #667eea;
+      background: rgba(102, 126, 234, 0.1);
+    }
+  }
+}
+
+// Transaction Styles
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.transaction-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(5px);
+  }
+}
+
+.transaction-header {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.transaction-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .eth-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.transaction-info {
+  flex: 1;
+
+  .transaction-title {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .transaction-badges {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .transaction-date {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+  }
+}
+
+.transaction-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  .transaction-price {
+    color: #10b981;
+    font-weight: 600;
+    font-size: 1.1rem;
+
+    i {
+      color: #a18cd1;
+    }
+  }
+
+  .transaction-hash {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.3);
+  word-break: break-all;
+}
+
+.transaction-status {
+  &.failed {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+  }
+}
+
+  .transaction-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    &.completed {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+    }
+
+    &.pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+    }
+  }
+}
+
+// Section Styles
+.section-header {
+  margin-bottom: 24px;
+
+  .section-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ffffff 0%, #e0e0ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .section-description {
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .info-row {
+    flex-direction: column;
+    
+    strong {
+      margin-bottom: 4px;
+    }
+  }
+
+  .transaction-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .transaction-footer {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+}
